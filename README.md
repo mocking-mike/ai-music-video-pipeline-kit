@@ -24,7 +24,15 @@ ai-music-video-pipeline-kit/
     README.md
   examples/
     first_user_message.md
+    media/
+      dopamina-z-linkedina.mp4
 ```
+
+## Example Output
+
+The repo includes a finished example music video:
+
+[Dopamina z LinkedIna](examples/media/dopamina-z-linkedina.mp4)
 
 ## How To Use It
 
@@ -72,4 +80,3 @@ my-music-video/
 
 The files in `templates/` are starter files. The agent can copy them into the
 new project root and fill them with project-specific data.
-
