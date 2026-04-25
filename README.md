@@ -1,13 +1,13 @@
 # AI Music Video Pipeline Kit
 
-Samowystarczalny starter-kit do zrobienia AI video od zera razem z Codexem,
-Claude'em albo innym agentem kodowym. Glowny przyklad uzycia: teledysk
-generowany i montowany pod konkretny plik MP3.
+A self-contained starter kit for building an AI video project from scratch with
+Codex, Claude, or another coding agent. The primary example is a music video
+generated and edited tightly to a specific MP3 file.
 
-Ten folder nie zaklada, ze masz jakikolwiek istniejacy projekt. Mozesz go
-skopiowac do pustego katalogu, dodac MP3 i zaczac prace od podstaw.
+This folder does not assume you already have a project. Copy it into an empty
+directory, add an MP3, and start from zero.
 
-## Co jest w srodku
+## What's Included
 
 ```text
 ai-music-video-pipeline-kit/
@@ -26,30 +26,29 @@ ai-music-video-pipeline-kit/
     first_user_message.md
 ```
 
-## Jak tego uzyc
+## How To Use It
 
-1. Skopiuj caly folder `ai-music-video-pipeline-kit` do nowego pustego katalogu.
-2. Zmien nazwe folderu projektu, np. na `my-music-video`.
-3. Wloz plik MP3 do `audio/source.mp3` albo popros agenta, zeby utworzyl strukture.
-4. Otworz projekt w Codexie albo Claude Code.
-5. Wklej agentowi zawartosc `AGENT_START_PROMPT.md`.
-6. Agent powinien zaczac od analizy audio, a dopiero potem robic storyboard,
-   asset bible, shot list, preview i generowanie video.
+1. Copy the entire `ai-music-video-pipeline-kit` folder into a new empty project directory.
+2. Rename the project folder, for example `my-music-video`.
+3. Add your MP3 as `audio/source.mp3`, or ask the agent to create the project structure first.
+4. Open the project in Codex, Claude Code, or a similar coding-agent environment.
+5. Paste the contents of `AGENT_START_PROMPT.md` into the agent.
+6. The agent should begin with audio analysis before creating the storyboard,
+   asset bible, shot list, preview, or video renders.
 
-## Najwazniejsze zasady
+## Core Rules
 
-- Video generation idzie przez fal.ai.
-- Storyboard jest tylko mapa fabuly i placeholderem w `preview.html`.
-- Storyboard images nie moga byc uzywane jako `reference_images` do renderow.
-- Finalne renderowanie uzywa tylko asset bible, approved footage i approved
+- Video generation runs through fal.ai.
+- Storyboard frames are only for story planning and `preview.html` placeholders.
+- Storyboard frames must never be used as `reference_images` for final renders.
+- Final renders may use only the asset bible, approved footage, and approved
   continuity frames.
-- Kazdy render zapisuje pelne `*_source_full.mp4` plus aktywny montazowy `*.mp4`.
-- Po dodaniu MP3 najpierw powstaje analiza: BPM, beat grid, sekcje, wokal i cue sheet.
-- `preview.html` jest centrum pracy od pierwszego dnia.
+- Every render must save the full `*_source_full.mp4` plus the active edited `*.mp4`.
+- After the MP3 is added, the first production step is audio analysis: BPM,
+  beat grid, song sections, vocal regions, cue sheet, and recommended edit points.
+- `preview.html` is the center of the workflow from day one.
 
-## Minimalny start projektu
-
-Docelowa struktura pustego projektu:
+## Minimal New Project Structure
 
 ```text
 my-music-video/
@@ -71,5 +70,6 @@ my-music-video/
   project_manifest.json
 ```
 
-Folder `templates/` zawiera pliki startowe, ktore agent moze skopiowac do
-roota nowego projektu i wypelnic danymi konkretnego klipu.
+The files in `templates/` are starter files. The agent can copy them into the
+new project root and fill them with project-specific data.
+

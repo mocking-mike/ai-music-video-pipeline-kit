@@ -1,17 +1,17 @@
 # Example First Message To The Agent
 
 ```text
-Chce zrobic od zera teledysk AI do pliku audio, ktory wrzucilem do
+I want to create an AI music video from scratch for the audio file I placed at
 audio/source.mp3.
 
-Uzyj ai-music-video-pipeline-kit jako kontraktu.
-Najpierw przeczytaj README.md, PIPELINE.md i AGENT_START_PROMPT.md.
+Use ai-music-video-pipeline-kit as the production contract.
+First read README.md, PIPELINE.md, and AGENT_START_PROMPT.md.
 
-Nie zaczynaj od storyboardu. Najpierw zrob dokladna analize MP3:
-BPM, beat grid, sekcje, wokal, cue sheet i rekomendowane punkty ciecia.
+Do not start with the storyboard. First create a detailed MP3 analysis:
+BPM, beat grid, song sections, vocal regions, cue sheet, and recommended cut points.
 
-Potem zaproponuj treatment, asset bible, storyboard i pierwszy preview.html.
-Finalne video generuj przez fal.ai. Storyboard images moga byc tylko
-placeholderami w preview, nigdy reference_images do renderow.
+Then propose the treatment, asset bible, storyboard, and first preview.html.
+Generate final video through fal.ai. Storyboard images may only be preview
+placeholders, never reference_images for renders.
 ```
 

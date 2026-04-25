@@ -1,37 +1,37 @@
 # Pipeline Contract
 
-Ten dokument jest kontraktem pracy dla agenta. Agent powinien przeczytac go
-przed rozpoczeciem projektu i trzymac sie zasad przez caly proces.
+This document is the production contract for the coding agent. The agent should
+read it before starting work and follow it throughout the project.
 
-## 0. Projekt startuje od zera
+## 0. The Project Starts From Zero
 
-Zakladamy, ze uzytkownik ma tylko:
+Assume the user has only:
 
-- plik MP3,
-- pomysl na teledysk albo krotki opis klimatu,
-- ewentualnie przyklady wizualne, ktore trzeba dopiero przepisac na asset bible.
+- an MP3 file,
+- a music-video idea or a short mood description,
+- optional visual examples that still need to be translated into an asset bible.
 
-Nie zakladamy istnienia zadnego starego repo, outputow, storyboardu ani assetow.
+Do not assume an existing repository, previous renders, storyboard, or asset pack.
 
-## 1. Kolejnosc pracy
+## 1. Work Order
 
-1. Utworz strukture projektu.
-2. Skopiuj template'y: `project_manifest.json`, `prompts.json`,
-   `asset_bible.json`, `storyboard.json`, `preview.html`.
-3. Umiesc MP3 w `audio/source.mp3`.
-4. Zrob audio analysis.
-5. Zrob treatment i podzial na sekcje muzyczne.
-6. Zrob storyboard jako opis fabuly i/lub obrazki placeholderowe.
-7. Zbuduj asset bible.
-8. Zrob shot list i `prompts.json`.
-9. Od razu uruchom `preview.html` na storyboard placeholderach.
-10. Generuj ujecia przez fal.ai.
-11. Po kazdym renderze aktualizuj preview.
-12. Eksportuj review MP4 z aktualnego preview.
+1. Create the project directory structure.
+2. Copy the templates: `project_manifest.json`, `prompts.json`,
+   `asset_bible.json`, `storyboard.json`, and `preview.html`.
+3. Place the MP3 at `audio/source.mp3`.
+4. Run audio analysis.
+5. Create the treatment and map it to the musical sections.
+6. Create the storyboard as story text and/or placeholder images.
+7. Build the asset bible.
+8. Create the shot list and `prompts.json`.
+9. Start working in `preview.html` immediately, using storyboard placeholders at first.
+10. Generate shots through fal.ai.
+11. Update the preview after every render.
+12. Export review MP4s from the current preview timeline.
 
-## 2. Audio analysis przed wszystkim
+## 2. Audio Analysis Comes First
 
-Po dodaniu MP3 agent musi przygotowac:
+After the MP3 is added, the agent must create:
 
 ```text
 audio/
@@ -40,102 +40,104 @@ audio/
   cue_sheet.md
 ```
 
-`analysis.json`:
+`analysis.json` should include:
 
 - duration,
-- bpm,
-- bpm_confidence,
-- beat_grid,
+- BPM,
+- BPM confidence,
+- beat grid,
 - bars,
 - downbeats,
-- energy_curve,
-- vocal_sections,
-- lyric_phrases, jesli mozliwe,
-- section_markers,
-- recommended_cuts,
-- moments_to_hold,
-- moments_for_fast_cutting.
+- energy curve,
+- vocal sections,
+- lyric phrases when possible,
+- section markers,
+- recommended cut points,
+- moments that should hold longer,
+- moments that invite faster cutting.
 
-`cue_sheet.md` ma byc czytelny dla czlowieka:
+`cue_sheet.md` should be readable by a director or editor:
 
 ```markdown
-| Time | Cue | What happens in music | Editing use |
+| Time | Cue | What happens in the music | Editing use |
 | --- | --- | --- | --- |
-| 00:00.00 | intro | Ambient start | Establish world |
+| 00:00.00 | intro | Ambient start | Establish the world |
 | 00:11.25 | vocal_in | First vocal phrase | Start act 1 |
 | 01:02.80 | drop | Strong reset | Hard cut / black frame |
 ```
 
-Shot timings musza wynikac z audio analysis, nie z recznego zgadywania.
+Shot timing must come from the audio analysis, not from guesswork.
 
-## 3. Storyboard rules
+## 3. Storyboard Rules
 
-Storyboard sluzy tylko do:
+The storyboard is only for:
 
-- fabuly,
+- story structure,
 - blocking,
-- emocji sceny,
-- placeholderow w `preview.html`,
-- drugiej zakladki `Storyboard`.
+- scene emotion,
+- placeholders in `preview.html`,
+- the separate `Storyboard` tab.
 
-Storyboard nie moze byc uzyty jako:
+The storyboard must never be used as:
 
-- reference image do fal.ai,
-- start frame finalnego renderu,
-- continuity frame,
-- source image do image-to-video,
-- image edit base.
+- a fal.ai reference image,
+- the start frame for a final render,
+- a continuity frame,
+- a source image for image-to-video,
+- an image-edit base.
 
-Kazdy prompt moze zawierac "storyboard intent", ale nie moze przekazac
-storyboard image jako visual reference.
+Prompts may include "storyboard intent" as text, but they must not pass the
+storyboard image as a visual reference.
 
-## 4. Asset bible rules
+## 4. Asset Bible Rules
 
-Asset bible jest jedynym zrodlem tozsamosci postaci, propsow, marek i UI.
+The asset bible is the source of truth for characters, props, brands, UI, and
+visual identity.
 
-Asset bible powinna zawierac:
+The asset bible should include:
 
-- glowne postacie,
-- warianty postaci: front, back, closeup, hands, wardrobe,
-- branding,
-- produkty,
-- stale propsy,
+- main characters,
+- character variants: front, back, close-up, hands, wardrobe,
+- brand assets,
+- products,
+- recurring props,
 - UI plates,
 - style references,
 - forbidden drift notes.
 
-Lokacje mozna budowac tekstem w modelu video, a potem utrwalac approved
-continuity frames. Nie trzeba generowac kazdej lokacji jako osobnego assetu.
+Locations can be built from text inside the video model and then locked in with
+approved continuity frames. You do not need to generate every location as a
+separate static asset.
 
-## 5. Video generation
+## 5. Video Generation
 
-Aktywny provider: fal.ai.
+Active provider: fal.ai.
 
-Domyslny model:
+Default model:
 
 ```text
 bytedance/seedance-2.0/reference-to-video
 ```
 
-Do przejsc i mostkow:
+For transitions and bridge shots:
 
 ```text
 bytedance/seedance-2.0/image-to-video
 ```
 
-Kazdy generator shota musi:
+Every shot generator must:
 
-- brac referencje tylko z asset bible lub approved refs,
-- walidowac, ze zaden path ze storyboardu nie trafia do `reference_images`,
-- zapisac pelny source clip,
-- zapisac aktywny clip montazowy,
-- wyciagnac preview, review i transition frames,
-- zaktualizowac `prompts.json`,
-- zaktualizowac `preview.html`.
+- use references only from the asset bible or approved refs,
+- validate that no storyboard path is passed to `reference_images`,
+- save the full source clip,
+- save the active edited clip,
+- extract preview, review, and transition frames,
+- update `prompts.json`,
+- update `preview.html`.
 
-## 6. Source clip policy
+## 6. Source Clip Policy
 
-Kazdy render zapisujemy tak:
+Every render is saved like this:
 
 ```text
 outputs/<act>/shot_<id>/
@@ -145,23 +147,23 @@ outputs/<act>/shot_<id>/
   shot_<id>_preview_<version>.png
 ```
 
-Pelny `*_source_full.mp4` nigdy nie jest nadpisywany przez trim. Aktywny
-montazowy `*.mp4` moze byc dociety, ale timeline w `preview.html` powinien
-umiec pracowac na `source_video`, `sourceStart` i `playbackRate`.
+The full `*_source_full.mp4` is never overwritten by a trim. The active edited
+`*.mp4` may be trimmed, but the timeline in `preview.html` should be able to
+work from `source_video`, `sourceStart`, and `playbackRate`.
 
-## 7. Continuity resolver
+## 7. Continuity Resolver
 
-Przed renderem agent wykonuje decyzje continuity.
+Before rendering, the agent makes a continuity decision.
 
-Nie wystarczy "wez poprzedni shot". Agent ma:
+It is not enough to blindly use the previous shot. The agent must:
 
-1. sprawdzic shot N-1,
-2. ocenic, czy jest ta sama przestrzen/scena/obiekt,
-3. jesli N-1 to intercut, montaz albo inna przestrzen, przeszukac starsze shoty,
-4. znalezc ostatni logicznie powiazany shot,
-5. zapisac decyzje w `prompts.json`.
+1. inspect shot N-1,
+2. decide whether it shares the same space, scene, object, or story beat,
+3. if N-1 is an intercut, montage insert, or different location, search older shots,
+4. find the most recent logically connected shot,
+5. record the decision in `prompts.json`.
 
-Tryby:
+Modes:
 
 - `new_scene`,
 - `same_scene_next_shot`,
@@ -170,16 +172,30 @@ Tryby:
 - `montage_insert`,
 - `storyboard_placeholder_only`.
 
-## 8. Preview-first workflow
+Example:
 
-`preview.html` istnieje od poczatku i ma dwie zakladki:
+```json
+{
+  "mode": "return_to_previous_scene",
+  "checked_previous_shots": ["019", "018"],
+  "source_shot": "018",
+  "source_frame": "refs/act1/transitions/shot_018_end_frame.png",
+  "reason": "Shot 019 is a surreal phone-world intercut. Shot 020 returns to the bank office.",
+  "inherit": ["room geometry", "light direction", "desk relationship"],
+  "do_not_inherit": ["exact pose", "temporary gesture", "background extras"]
+}
+```
+
+## 8. Preview-First Workflow
+
+`preview.html` exists from the beginning and has two tabs:
 
 - `Video Preview`,
 - `Storyboard`.
 
-Na poczatku `Video Preview` moze pokazywac storyboard images jako placeholdery.
-Po renderze segment zostaje przepiety na video. Storyboard zostaje w drugiej
-zakladce tylko jako mapa fabuly.
+At first, `Video Preview` may show storyboard images as placeholders. After a
+render exists, the segment is switched to video. The storyboard remains in the
+second tab only as a story map.
 
 Segment format:
 
@@ -198,7 +214,7 @@ Segment format:
 ]
 ```
 
-Statusy:
+Statuses:
 
 - `storyboard`,
 - `generated`,
@@ -206,12 +222,12 @@ Statusy:
 - `approved`,
 - `manual`.
 
-## 9. Prompt format
+## 9. Prompt Format
 
-Kazdy prompt do video powinien zawierac:
+Every video prompt should include:
 
-- role kazdego `@Image`,
-- storyboard intent jako tekst, jesli potrzebny,
+- the role of each `@Image`,
+- storyboard intent as text, if useful,
 - action,
 - camera,
 - environment,
@@ -219,7 +235,7 @@ Kazdy prompt do video powinien zawierac:
 - constraints,
 - next-shot usefulness.
 
-Dobry wzor:
+Good pattern:
 
 ```text
 Storyboard intent only: the hero notices the rival billboard and stops.
@@ -233,21 +249,21 @@ Constraints: no storyboard image inheritance, no extra hero duplicate, no
 readable city names, no landmark skyline.
 ```
 
-Zly wzor:
+Bad pattern:
 
 ```text
 Animate this storyboard image.
 ```
 
-## 10. Definition of done
+## 10. Definition Of Done
 
-Projekt jest gotowy do review, gdy:
+The project is ready for review when:
 
-- `audio/analysis.json`, `beat_grid.csv`, `cue_sheet.md` istnieja,
-- `preview.html` odtwarza caly timeline,
-- kazdy shot ma status inny niz pusty,
-- storyboard images nie sa uzyte jako render references,
-- kazdy wygenerowany shot ma `source_full`,
-- registry wskazuje aktualne video i source video,
-- da sie wyeksportowac MP4 review z aktualnego preview.
+- `audio/analysis.json`, `beat_grid.csv`, and `cue_sheet.md` exist,
+- `preview.html` plays the full timeline,
+- every shot has a non-empty status,
+- storyboard images are not used as render references,
+- every generated shot has a `source_full`,
+- the registry points to the current video and source video,
+- a review MP4 can be exported from the current preview.
 

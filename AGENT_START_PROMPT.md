@@ -1,39 +1,40 @@
 # Agent Start Prompt
 
-Wklej ponizszy prompt do Codexa, Claude'a albo innego agenta kodowego po
-otwarciu pustego projektu.
+Paste the prompt below into Codex, Claude, or another coding agent after opening
+an empty project.
 
 ```text
-Pracujesz nad nowym AI music video od zera.
+You are working on a new AI music video from scratch.
 
-Najpierw przeczytaj:
+First read:
 - ai-music-video-pipeline-kit/PIPELINE.md
 - ai-music-video-pipeline-kit/README.md
 
-Traktuj je jako kontrakt produkcyjny.
+Treat those files as the production contract.
 
-Cel:
-Zbuduj projekt teledysku od zera: audio analysis, storyboard, asset bible,
-shot list, preview.html, a potem renderowanie ujec przez fal.ai.
+Goal:
+Build the music-video project from zero: audio analysis, storyboard, asset
+bible, shot list, preview.html, and then shot rendering through fal.ai.
 
-Twarde zasady:
-- finalne video generujemy przez fal.ai, nie Atlas Cloud;
-- storyboard images sa tylko do fabuly i placeholderow w preview.html;
-- nigdy nie uzywaj storyboard images jako reference_images do fal.ai;
-- do renderow uzywaj asset bible, approved source footage i approved continuity frames;
-- po dodaniu MP3 zawsze najpierw zrob audio analysis: BPM, beat grid, sekcje,
-  wokal, cue sheet i rekomendowane punkty ciecia;
-- kazdy render zapisuj jako pelny *_source_full.mp4 plus aktywny dociety *.mp4;
-- przed kazdym renderem wykonaj continuity decision: sprawdz poprzedni shot,
-  a jesli to intercut lub inna przestrzen, znajdz ostatni powiazany shot;
-- preview.html jest centrum pracy od poczatku i ma miec zakladki Video Preview
-  oraz Storyboard.
+Hard rules:
+- final video is generated through fal.ai, not Atlas Cloud;
+- storyboard images are only for story planning and preview.html placeholders;
+- never use storyboard images as reference_images for fal.ai;
+- final renders may use only the asset bible, approved source footage, and
+  approved continuity frames;
+- after an MP3 is added, always start with audio analysis: BPM, beat grid,
+  song sections, vocal regions, cue sheet, and recommended cut points;
+- every render must save the full *_source_full.mp4 plus the active trimmed *.mp4;
+- before every render, make a continuity decision: inspect the previous shot,
+  and if it is an intercut or different location, find the latest related shot;
+- preview.html is the center of the workflow from the start and must have
+  `Video Preview` and `Storyboard` tabs.
 
-Pierwsze zadanie:
-1. Utworz strukture katalogow projektu.
-2. Skopiuj template'y z ai-music-video-pipeline-kit/templates do root projektu.
-3. Jesli nie ma jeszcze MP3, popros mnie o plik audio.
-4. Gdy MP3 bedzie dostepne, zacznij od audio analysis i zapisz wyniki w audio/.
-5. Dopiero potem przejdz do treatmentu, storyboardu i asset bible.
+First task:
+1. Create the project directory structure.
+2. Copy the templates from ai-music-video-pipeline-kit/templates into the project root.
+3. If there is no MP3 yet, ask me for the audio file.
+4. Once the MP3 is available, start with audio analysis and save the results in audio/.
+5. Only then move on to the treatment, storyboard, and asset bible.
 ```
 
