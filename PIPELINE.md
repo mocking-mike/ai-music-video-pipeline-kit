@@ -89,7 +89,29 @@ The storyboard must never be used as:
 Prompts may include "storyboard intent" as text, but they must not pass the
 storyboard image as a visual reference.
 
-## 4. Asset Bible Rules
+## 4. Human Example Media Rules
+
+The repository may include finished example outputs for humans who want to
+understand what the pipeline can produce. These live under `examples/`.
+
+Example media is documentation, not production material. It must never be used
+as:
+
+- source footage,
+- a fal.ai reference,
+- a continuity frame,
+- an asset-bible item,
+- a storyboard frame,
+- a target frame,
+- an image-to-video or video-to-video input,
+- training data for a new project.
+
+When starting a new project from this kit, copy the templates and docs, but do
+not copy `examples/media/` into the active project workspace unless the user
+explicitly wants to keep it as documentation. Even then, validators must treat
+`examples/` as a forbidden render-reference root.
+
+## 5. Asset Bible Rules
 
 The asset bible is the source of truth for characters, props, brands, UI, and
 visual identity.
@@ -109,7 +131,7 @@ Locations can be built from text inside the video model and then locked in with
 approved continuity frames. You do not need to generate every location as a
 separate static asset.
 
-## 5. Video Generation
+## 6. Video Generation
 
 Active provider: fal.ai.
 
@@ -129,13 +151,14 @@ Every shot generator must:
 
 - use references only from the asset bible or approved refs,
 - validate that no storyboard path is passed to `reference_images`,
+- validate that no file under `examples/` is passed to `reference_images`,
 - save the full source clip,
 - save the active edited clip,
 - extract preview, review, and transition frames,
 - update `prompts.json`,
 - update `preview.html`.
 
-## 6. Source Clip Policy
+## 7. Source Clip Policy
 
 Every render is saved like this:
 
@@ -151,7 +174,7 @@ The full `*_source_full.mp4` is never overwritten by a trim. The active edited
 `*.mp4` may be trimmed, but the timeline in `preview.html` should be able to
 work from `source_video`, `sourceStart`, and `playbackRate`.
 
-## 7. Continuity Resolver
+## 8. Continuity Resolver
 
 Before rendering, the agent makes a continuity decision.
 
@@ -186,7 +209,7 @@ Example:
 }
 ```
 
-## 8. Preview-First Workflow
+## 9. Preview-First Workflow
 
 `preview.html` exists from the beginning and has two tabs:
 
@@ -222,7 +245,7 @@ Statuses:
 - `approved`,
 - `manual`.
 
-## 9. Prompt Format
+## 10. Prompt Format
 
 Every video prompt should include:
 
@@ -255,7 +278,7 @@ Bad pattern:
 Animate this storyboard image.
 ```
 
-## 10. Definition Of Done
+## 11. Definition Of Done
 
 The project is ready for review when:
 
@@ -263,7 +286,7 @@ The project is ready for review when:
 - `preview.html` plays the full timeline,
 - every shot has a non-empty status,
 - storyboard images are not used as render references,
+- example media is not used as source footage or render references,
 - every generated shot has a `source_full`,
 - the registry points to the current video and source video,
 - a review MP4 can be exported from the current preview.
-

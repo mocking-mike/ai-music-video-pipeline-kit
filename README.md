@@ -23,6 +23,7 @@ ai-music-video-pipeline-kit/
   scripts/
     README.md
   examples/
+    README.md
     first_user_message.md
     media/
       dopamina-z-linkedina.mp4
@@ -30,9 +31,15 @@ ai-music-video-pipeline-kit/
 
 ## Example Output
 
-The repo includes a finished example music video:
+The repo includes a finished example music video for humans evaluating the
+workflow:
 
 [Dopamina z LinkedIna](examples/media/dopamina-z-linkedina.mp4)
+
+This MP4 is not part of the pipeline state. Do not use it as source footage, a
+render reference, a continuity reference, an asset-bible item, or an input for a
+new project. It is only a human-facing example of the kind of output the
+pipeline can help produce.
 
 ## How To Use It
 
@@ -49,8 +56,10 @@ The repo includes a finished example music video:
 - Video generation runs through fal.ai.
 - Storyboard frames are only for story planning and `preview.html` placeholders.
 - Storyboard frames must never be used as `reference_images` for final renders.
-- Final renders may use only the asset bible, approved footage, and approved
-  continuity frames.
+- Final renders may use only the asset bible, approved footage created inside
+  the active project, and approved continuity frames.
+- Files under `examples/` are documentation/demo material only and must never be
+  used as render inputs.
 - Every render must save the full `*_source_full.mp4` plus the active edited `*.mp4`.
 - After the MP3 is added, the first production step is audio analysis: BPM,
   beat grid, song sections, vocal regions, cue sheet, and recommended edit points.

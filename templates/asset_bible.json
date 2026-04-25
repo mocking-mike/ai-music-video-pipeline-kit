@@ -1,13 +1,14 @@
 {
   "version": 1,
-  "notes": "Only files listed here, approved source footage, and approved continuity frames may be used as visual references for final renders.",
+  "notes": "Only files listed here, approved source footage created inside the active project, and approved continuity frames may be used as visual references for final renders. Human-facing examples in examples/ are documentation only.",
   "characters": [],
   "props": [],
   "brands": [],
   "ui": [],
   "style_refs": [],
   "forbidden_refs": [
-    "storyboard/frames"
+    "storyboard/frames",
+    "examples"
   ],
   "example_character_entry": {
     "id": "hero",
@@ -23,4 +24,3 @@
     ]
   }
 }
-

@@ -13,5 +13,7 @@ BPM, beat grid, song sections, vocal regions, cue sheet, and recommended cut poi
 Then propose the treatment, asset bible, storyboard, and first preview.html.
 Generate final video through fal.ai. Storyboard images may only be preview
 placeholders, never reference_images for renders.
-```
 
+Ignore any MP4s under examples/ when building my project. They are only
+human-facing demos of possible output, not source footage or render references.
+```

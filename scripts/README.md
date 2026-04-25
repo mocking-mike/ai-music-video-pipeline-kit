@@ -41,7 +41,10 @@ Shared fal.ai helper. Must support:
 scripts/validate_refs.py
 ```
 
-Must block storyboard images from final render refs.
+Must block storyboard images and human-facing example media from final render
+refs. In particular, paths under `storyboard/frames/` and `examples/` must never
+be passed to fal.ai as `reference_images`, source videos, continuity frames, or
+image-to-video inputs.
 
 ```text
 scripts/resolve_continuity.py
@@ -61,4 +64,3 @@ scripts/export_preview_mp4.py
 ```
 
 Must render current `preview.html` timeline to a review MP4.
-

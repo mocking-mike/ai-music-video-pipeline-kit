@@ -13,6 +13,7 @@
     "default_video_model": "bytedance/seedance-2.0/reference-to-video",
     "transition_video_model": "bytedance/seedance-2.0/image-to-video",
     "storyboard_images_allowed_as_render_refs": false,
+    "example_media_allowed_as_render_refs": false,
     "source_full_required": true,
     "preview_first": true
   },
@@ -22,6 +23,7 @@
     "prompts": "prompts.json",
     "preview": "preview.html",
     "outputs": "outputs",
-    "refs": "refs"
+    "refs": "refs",
+    "human_examples": "examples"
   }
 }

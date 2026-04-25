@@ -15,7 +15,8 @@
       "primary_script": null,
       "asset_refs": [],
       "forbidden_refs": [
-        "storyboard/frames/shot_001.png"
+        "storyboard/frames/shot_001.png",
+        "examples"
       ],
       "continuity": {
         "mode": "storyboard_placeholder_only",
@@ -33,4 +34,3 @@
     }
   ]
 }
-

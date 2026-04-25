@@ -20,8 +20,10 @@ Hard rules:
 - final video is generated through fal.ai, not Atlas Cloud;
 - storyboard images are only for story planning and preview.html placeholders;
 - never use storyboard images as reference_images for fal.ai;
-- final renders may use only the asset bible, approved source footage, and
-  approved continuity frames;
+- files under examples/ are human-facing demos only and must never be used as
+  source footage, asset-bible items, continuity frames, or render references;
+- final renders may use only the asset bible, approved source footage created
+  inside the active project, and approved continuity frames;
 - after an MP3 is added, always start with audio analysis: BPM, beat grid,
   song sections, vocal regions, cue sheet, and recommended cut points;
 - every render must save the full *_source_full.mp4 plus the active trimmed *.mp4;
@@ -37,4 +39,3 @@ First task:
 4. Once the MP3 is available, start with audio analysis and save the results in audio/.
 5. Only then move on to the treatment, storyboard, and asset bible.
 ```
-
