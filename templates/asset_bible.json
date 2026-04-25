@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "notes": "Only files listed here, approved source footage, and approved continuity frames may be used as visual references for final renders.",
+  "characters": [],
+  "props": [],
+  "brands": [],
+  "ui": [],
+  "style_refs": [],
+  "forbidden_refs": [
+    "storyboard/frames"
+  ],
+  "example_character_entry": {
+    "id": "hero",
+    "description": "Main character identity.",
+    "refs": {
+      "front": "assets/hero/hero_front.png",
+      "back": "assets/hero/hero_back.png",
+      "closeup": "assets/hero/hero_closeup.png"
+    },
+    "identity_rules": [
+      "Do not change face identity.",
+      "Do not change wardrobe unless the shot explicitly calls for it."
+    ]
+  }
+}
+

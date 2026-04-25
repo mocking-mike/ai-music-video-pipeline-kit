@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "source": "AI music video pipeline registry",
+  "shots": [
+    {
+      "shot": "001",
+      "start": 0.0,
+      "end": 3.5,
+      "section": "INTRO",
+      "description": "Opening shot placeholder.",
+      "storyboard_image": "storyboard/frames/shot_001.png",
+      "status": "storyboard",
+      "provider": "fal.ai",
+      "model": "bytedance/seedance-2.0/reference-to-video",
+      "primary_script": null,
+      "asset_refs": [],
+      "forbidden_refs": [
+        "storyboard/frames/shot_001.png"
+      ],
+      "continuity": {
+        "mode": "storyboard_placeholder_only",
+        "checked_previous_shots": [],
+        "source_shot": null,
+        "source_frame": null,
+        "reason": "No final render yet. Storyboard is used only as preview placeholder.",
+        "inherit": [],
+        "do_not_inherit": []
+      },
+      "prompt": "",
+      "source_video": null,
+      "output_video": null,
+      "source_image": null
+    }
+  ]
+}
+

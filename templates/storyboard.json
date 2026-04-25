@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "rules": {
+    "may_be_used_as_preview_placeholder": true,
+    "may_be_used_as_render_reference": false
+  },
+  "frames": [
+    {
+      "shot": "001",
+      "image": "storyboard/frames/shot_001.png",
+      "title": "Opening beat",
+      "intent": "Describe what the shot should communicate.",
+      "blocking": "Describe character and camera blocking in words.",
+      "notes": "This image is only a placeholder and story guide."
+    }
+  ]
+}
+

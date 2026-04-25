@@ -1,0 +1,16 @@
+# Local project audio and generated media
+audio/source.mp3
+audio/*.wav
+audio/*.mp3
+outputs/
+refs/
+storyboard/frames/
+
+# Local environment
+.env
+.venv/
+node_modules/
+
+# OS/editor noise
+.DS_Store
+*.swp

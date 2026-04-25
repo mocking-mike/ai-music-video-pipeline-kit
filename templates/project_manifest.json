@@ -1,0 +1,27 @@
+{
+  "project_name": "untitled-ai-music-video",
+  "description": "Starter project for AI video workflows, with a music video as the primary example.",
+  "created_with": "ai-music-video-pipeline-kit",
+  "audio": {
+    "source": "audio/source.mp3",
+    "analysis": "audio/analysis.json",
+    "beat_grid": "audio/beat_grid.csv",
+    "cue_sheet": "audio/cue_sheet.md"
+  },
+  "pipeline": {
+    "video_provider": "fal.ai",
+    "default_video_model": "bytedance/seedance-2.0/reference-to-video",
+    "transition_video_model": "bytedance/seedance-2.0/image-to-video",
+    "storyboard_images_allowed_as_render_refs": false,
+    "source_full_required": true,
+    "preview_first": true
+  },
+  "paths": {
+    "asset_bible": "assets/asset_bible.json",
+    "storyboard": "storyboard/storyboard.json",
+    "prompts": "prompts.json",
+    "preview": "preview.html",
+    "outputs": "outputs",
+    "refs": "refs"
+  }
+}

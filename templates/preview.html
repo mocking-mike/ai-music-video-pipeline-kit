@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Music Video Preview</title>
+<style>
+  :root {
+    --bg: #101214;
+    --panel: #191d21;
+    --panel-2: #22272d;
+    --line: rgba(255,255,255,.14);
+    --text: #f5f0e8;
+    --muted: #a5adb5;
+    --accent: #f4c95d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  .app {
+    width: min(1180px, calc(100vw - 32px));
+    margin: 24px auto;
+    display: grid;
+    gap: 16px;
+  }
+  .tabs, .controls, .timeline, .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .tabs {
+    display: flex;
+    padding: 6px;
+    gap: 6px;
+  }
+  button {
+    appearance: none;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font: inherit;
+  }
+  button.active { border-color: var(--accent); color: var(--accent); }
+  .view { display: none; }
+  .view.active { display: grid; gap: 16px; }
+  .stage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #060708;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  video, .storyboard-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .storyboard-frame { display: none; }
+  .meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 18px 20px;
+    background: linear-gradient(transparent, rgba(0,0,0,.82));
+  }
+  .meta small {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+  .meta h1 {
+    margin: 6px 0 0;
+    font-size: clamp(20px, 3vw, 36px);
+  }
+  .controls {
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .time { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .timeline {
+    padding: 16px;
+    display: grid;
+    gap: 10px;
+  }
+  .track {
+    position: relative;
+    height: 34px;
+    border-radius: 8px;
+    background: rgba(255,255,255,.08);
+    overflow: hidden;
+  }
+  .seg {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-right: 1px solid rgba(0,0,0,.55);
+    background: rgba(244,201,93,.36);
+  }
+  .seg.storyboard { background: rgba(165,173,181,.34); }
+  .seg.needs_rerender { background: rgba(255,120,80,.42); }
+  .playhead {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    transform: translateX(-1px);
+  }
+  .story-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .card img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    background: #08090a;
+  }
+  .card div { padding: 12px; }
+  .card small { color: var(--muted); }
+  .panel { padding: 16px; color: var(--muted); line-height: 1.5; }
+</style>
+</head>
+<body>
+<main class="app">
+  <nav class="tabs" aria-label="Preview tabs">
+    <button class="active" data-tab="video">Video Preview</button>
+    <button data-tab="storyboard">Storyboard</button>
+  </nav>
+
+  <section id="videoView" class="view active">
+    <div class="stage" id="stage">
+      <video id="stageVideo" muted playsinline></video>
+      <img id="storyboardFrame" class="storyboard-frame" alt="">
+      <div class="meta">
+        <small id="shotMeta">No shot</small>
+        <h1 id="shotTitle">Add segments in rawSegments</h1>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="playPause">Play</button>
+      <span class="time" id="clock">00:00.00 / 00:00.00</span>
+    </div>
+    <div class="timeline">
+      <div class="track" id="track"></div>
+    </div>
+    <audio id="masterAudio" preload="auto">
+      <source src="audio/source.mp3" type="audio/mpeg">
+    </audio>
+  </section>
+
+  <section id="storyboardView" class="view">
+    <div class="story-grid" id="storyGrid"></div>
+    <div class="panel">
+      Storyboard frames are for narrative planning and preview placeholders only.
+      Do not pass them as render references to fal.ai.
+    </div>
+  </section>
+</main>
+
+<script>
+const rawSegments = [
+  ["001", 0, 3.5, "INTRO", "Opening shot placeholder", null, 0, 1, "storyboard/frames/shot_001.png", "storyboard"]
+];
+
+const segments = rawSegments.map(([shot, start, end, section, title, video, sourceStart = 0, playbackRate = 1, storyboardImage = null, status = "storyboard"]) => ({
+  shot: String(shot),
+  start: Number(start),
+  end: Number(end),
+  section,
+  title,
+  video,
+  sourceStart: Number(sourceStart || 0),
+  playbackRate: Number(playbackRate || 1),
+  storyboardImage,
+  status
+}));
+
+const audio = document.getElementById("masterAudio");
+const stageVideo = document.getElementById("stageVideo");
+const storyboardFrame = document.getElementById("storyboardFrame");
+const shotMeta = document.getElementById("shotMeta");
+const shotTitle = document.getElementById("shotTitle");
+const playPause = document.getElementById("playPause");
+const clock = document.getElementById("clock");
+const track = document.getElementById("track");
+const storyGrid = document.getElementById("storyGrid");
+
+const duration = Math.max(...segments.map(s => s.end), 0);
+let activeShot = null;
+
+function fmt(value) {
+  const safe = Math.max(0, Number(value) || 0);
+  const m = Math.floor(safe / 60);
+  const s = safe - m * 60;
+  return `${String(m).padStart(2, "0")}:${s.toFixed(2).padStart(5, "0")}`;
+}
+
+function currentSegment(time) {
+  return segments.find(s => time >= s.start && time < s.end) || segments[segments.length - 1];
+}
+
+function loadSegment(segment) {
+  if (!segment || activeShot === segment.shot) return;
+  activeShot = segment.shot;
+  shotMeta.textContent = `${segment.section} / Shot ${segment.shot} / ${segment.status}`;
+  shotTitle.textContent = segment.title;
+
+  if (segment.video) {
+    storyboardFrame.style.display = "none";
+    stageVideo.style.display = "block";
+    stageVideo.src = segment.video;
+    stageVideo.currentTime = segment.sourceStart;
+    stageVideo.playbackRate = segment.playbackRate;
+    if (!audio.paused) stageVideo.play().catch(() => {});
+  } else if (segment.storyboardImage) {
+    stageVideo.pause();
+    stageVideo.removeAttribute("src");
+    stageVideo.style.display = "none";
+    storyboardFrame.src = segment.storyboardImage;
+    storyboardFrame.style.display = "block";
+  }
+}
+
+function syncVideo(segment, time) {
+  if (!segment || !segment.video || !stageVideo.src) return;
+  const target = segment.sourceStart + (time - segment.start) * segment.playbackRate;
+  if (Math.abs(stageVideo.currentTime - target) > 0.18) {
+    stageVideo.currentTime = Math.max(0, target);
+  }
+}
+
+function renderTimeline() {
+  track.innerHTML = "";
+  for (const segment of segments) {
+    const el = document.createElement("button");
+    el.className = `seg ${segment.status}`;
+    el.style.left = `${(segment.start / duration) * 100}%`;
+    el.style.width = `${((segment.end - segment.start) / duration) * 100}%`;
+    el.title = `${segment.shot}: ${segment.title}`;
+    el.addEventListener("click", () => {
+      audio.currentTime = segment.start;
+      update();
+    });
+    track.appendChild(el);
+  }
+  const playhead = document.createElement("div");
+  playhead.className = "playhead";
+  playhead.id = "playhead";
+  track.appendChild(playhead);
+}
+
+function renderStoryboard() {
+  storyGrid.innerHTML = "";
+  for (const segment of segments) {
+    const card = document.createElement("article");
+    card.className = "card";
+    const img = document.createElement("img");
+    img.src = segment.storyboardImage || "";
+    img.alt = segment.title;
+    const body = document.createElement("div");
+    body.innerHTML = `<small>Shot ${segment.shot} / ${segment.section}</small><h3>${segment.title}</h3>`;
+    card.append(img, body);
+    storyGrid.appendChild(card);
+  }
+}
+
+function update() {
+  const time = Math.min(audio.currentTime || 0, duration);
+  const segment = currentSegment(time);
+  loadSegment(segment);
+  syncVideo(segment, time);
+  clock.textContent = `${fmt(time)} / ${fmt(duration)}`;
+  const playhead = document.getElementById("playhead");
+  if (playhead) playhead.style.left = `${duration ? (time / duration) * 100 : 0}%`;
+}
+
+playPause.addEventListener("click", () => {
+  if (audio.paused) {
+    audio.play();
+    if (stageVideo.src) stageVideo.play().catch(() => {});
+    playPause.textContent = "Pause";
+  } else {
+    audio.pause();
+    stageVideo.pause();
+    playPause.textContent = "Play";
+  }
+});
+
+audio.addEventListener("timeupdate", update);
+audio.addEventListener("pause", () => {
+  stageVideo.pause();
+  playPause.textContent = "Play";
+});
+audio.addEventListener("ended", () => {
+  stageVideo.pause();
+  playPause.textContent = "Play";
+});
+
+document.querySelectorAll("[data-tab]").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll("[data-tab]").forEach(item => item.classList.remove("active"));
+    button.classList.add("active");
+    const tab = button.dataset.tab;
+    document.getElementById("videoView").classList.toggle("active", tab === "video");
+    document.getElementById("storyboardView").classList.toggle("active", tab === "storyboard");
+  });
+});
+
+renderTimeline();
+renderStoryboard();
+update();
+</script>
+</body>
+</html>
+
